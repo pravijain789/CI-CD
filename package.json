@@ -1,0 +1,19 @@
+{
+  "name": "actions",
+  "version": "1.0.0",
+  "main": "eslint.config.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "build": "echo 'Plain JS requires no build...'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "jest": "^30.3.0"
+  }
+}
