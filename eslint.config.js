@@ -5,8 +5,8 @@ export default [
       sourceType: "module",
     },
     rules: {
-      "no-unused-vars": "error", 
-      semi: ["error", "always"], 
+      "no-unused-vars": "error",
+      semi: ["error", "always"],
     },
   },
 ];
