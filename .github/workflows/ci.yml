@@ -2,18 +2,48 @@ name: Advanced CI Pipeline
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
+  prettier:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Download code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 🔍 Check formatting
+        run: npm run format:check
+        continue-on-error: true
+
+      - name: 🎨 Fix formatting
+        run: npm run format
+
+      - name: 💾 Commit formatting changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: format code with prettier"
+
   lint-code:
     runs-on: ubuntu-latest
+    needs: prettier
     steps:
       - name: 📥 Download code
         uses: actions/checkout@v4
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
       - name: 📦 Install dependencies
         run: npm ci
       - name: 🧹 Run ESLint
@@ -27,7 +57,7 @@ jobs:
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
       - name: 📦 Install dependencies
         run: npm ci
       - name: 🧪 Run Jest Tests
@@ -35,14 +65,14 @@ jobs:
 
   build-project:
     runs-on: ubuntu-latest
-    needs: [lint-code, run-tests] 
-    
+    needs: [prettier, lint-code, run-tests]
+
     steps:
       - name: 📥 Download code
         uses: actions/checkout@v4
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
       - name: 🏗️ Run Build Command
         run: npm run build
