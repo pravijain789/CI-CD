@@ -1,4 +1,5 @@
 let a = 10;
+let b = 20;
 
 export function capitalize(word) {
   if (!word) return "";
